@@ -1,10 +1,10 @@
-# AGI Recognition Problem - Apple Design Style (Light)
+# AGI Recognition Problem 
 
 A modern, responsive website exploring the AGI recognition debate, built using Apple's Web Design Style guidelines in a clean, light color scheme.
 
 ## 🎨 Design System
 
-This site implements Apple's core design principles with a refined light-only color palette:
+This site implements core design principles with a refined light-only color palette:
 
 ### Clarity, Deference & Depth
 - **Content First** - UI elements never compete with content
@@ -158,8 +158,8 @@ Every animation, interaction, and layout decision serves both aesthetic and func
 - [x] Hardware-accelerated animations
 - [x] Smooth scroll behavior
 - [x] Glassmorphism effects
-- [x] Apple-style easing functions
+s
 
 ---
 
-Built with Apple Web Design Style Guidelines · Light Theme · 2025
+Built with Design Style Guidelines · Light Theme · 2026
