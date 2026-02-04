@@ -204,7 +204,7 @@
         }
 
         /* ========================================
-           NAVIGATION - Glassmorphism Header
+           NAVIGATION - Enhanced Smooth Navigation
            ======================================== */
         .nav {
             position: fixed;
@@ -215,7 +215,10 @@
             z-index: var(--z-sticky);
             background: transparent;
             border-bottom: 1px solid transparent;
-            transition: all var(--duration-slow) var(--ease-apple);
+            transition: background var(--duration-slow) var(--ease-apple),
+                        backdrop-filter var(--duration-slow) var(--ease-apple),
+                        border-bottom var(--duration-slow) var(--ease-apple),
+                        box-shadow var(--duration-slow) var(--ease-apple);
         }
 
         .nav.scrolled {
@@ -223,6 +226,18 @@
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Progress Bar */
+        .nav-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-blue) 0%, var(--accent-blue-hover) 100%);
+            width: 0%;
+            transition: width 0.1s linear;
         }
 
         .nav-content {
@@ -233,6 +248,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            position: relative;
         }
 
         .nav-logo {
@@ -241,6 +257,11 @@
             color: var(--text-primary);
             text-decoration: none;
             letter-spacing: var(--letter-spacing-tight);
+            transition: color var(--duration-base) var(--ease-apple);
+        }
+
+        .nav-logo:hover {
+            color: var(--accent-blue);
         }
 
         .nav-items {
@@ -249,19 +270,25 @@
             list-style: none;
         }
 
+        .nav-item {
+            position: relative;
+        }
+
         .nav-link {
             font-size: 14px;
             font-weight: 400;
             color: var(--text-secondary);
             text-decoration: none;
-            transition: color var(--duration-fast) var(--ease-apple);
+            transition: color var(--duration-base) var(--ease-apple);
             position: relative;
+            padding: 4px 0;
         }
 
+        /* Animated Underline */
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: -4px;
+            bottom: 0;
             left: 0;
             width: 100%;
             height: 2px;
@@ -271,12 +298,43 @@
             transition: transform var(--duration-base) var(--ease-apple);
         }
 
+        /* Hover State */
         .nav-link:hover {
             color: var(--text-primary);
         }
 
         .nav-link:hover::after {
             transform: scaleX(1);
+        }
+
+        /* Active State */
+        .nav-link.active {
+            color: var(--accent-blue);
+            font-weight: 500;
+        }
+
+        .nav-link.active::after {
+            transform: scaleX(1);
+            background: var(--accent-blue);
+        }
+
+        /* Smooth Active Transitions */
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-blue-light);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--duration-slow) var(--ease-enter);
+        }
+
+        .nav-link.active::before {
+            transform: scaleX(1);
+            opacity: 0.5;
         }
 
         /* ========================================
@@ -829,14 +887,21 @@
     <!-- Skip Link for Accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- Navigation - Glassmorphism -->
+    <!-- Navigation - Enhanced Smooth Navigation -->
     <nav class="nav" role="navigation" aria-label="Main navigation">
+        <div class="nav-progress" aria-hidden="true"></div>
         <div class="nav-content">
             <a href="#" class="nav-logo">AGI Recognition Problem</a>
             <ul class="nav-items">
-                <li><a href="#hero" class="nav-link">Overview</a></li>
-                <li><a href="#evidence" class="nav-link">Evidence</a></li>
-                <li><a href="#mirror" class="nav-link">Analysis</a></li>
+                <li class="nav-item">
+                    <a href="#hero" class="nav-link active" data-section="hero">Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#evidence" class="nav-link" data-section="evidence">Evidence</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#mirror" class="nav-link" data-section="mirror">Analysis</a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -995,24 +1060,148 @@
         <p>The AGI Recognition Problem · 2025</p>
     </footer>
 
-    <!-- JavaScript - Interactions -->
+    <!-- JavaScript - Enhanced Smooth Navigation -->
     <script>
-        // Navigation Glass Effect on Scroll
-        const nav = document.querySelector('.nav');
-        let ticking = false;
+        // =========================================
+        // NAVIGATION SYSTEM
+        // =========================================
 
-        window.addEventListener('scroll', () => {
+        const nav = document.querySelector('.nav');
+        const navProgress = document.querySelector('.nav-progress');
+        const navLinks = document.querySelectorAll('.nav-link[data-section]');
+        const sections = {
+            hero: document.getElementById('hero'),
+            evidence: document.getElementById('evidence'),
+            mirror: document.getElementById('mirror')
+        };
+
+        let ticking = false;
+        let currentSection = 'hero';
+
+        // Scroll Handler with RAF optimization
+        function handleScroll() {
             if (!ticking) {
                 window.requestAnimationFrame(() => {
-                    nav.classList.toggle('scrolled', window.scrollY > 20);
+                    const scrollY = window.scrollY;
+                    
+                    // Glass effect with improved threshold
+                    nav.classList.toggle('scrolled', scrollY > 10);
+                    
+                    // Progress bar
+                    const windowHeight = window.innerHeight;
+                    const documentHeight = document.documentElement.scrollHeight - windowHeight;
+                    const progress = (scrollY / documentHeight) * 100;
+                    navProgress.style.width = `${Math.min(progress, 100)}%`;
+                    
+                    // Active section tracking
+                    updateActiveSection();
+                    
                     ticking = false;
                 });
                 ticking = true;
             }
+        }
+
+        // Update active section based on viewport position
+        function updateActiveSection() {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            
+            // Determine which section is most visible
+            let maxVisible = 0;
+            let activeSectionId = 'hero';
+            
+            Object.keys(sections).forEach(sectionId => {
+                const section = sections[sectionId];
+                if (!section) return;
+                
+                const rect = section.getBoundingClientRect();
+                const sectionTop = rect.top + scrollY;
+                const sectionHeight = rect.height;
+                
+                // Calculate visible portion
+                const visibleTop = Math.max(scrollY, sectionTop);
+                const visibleBottom = Math.min(scrollY + windowHeight, sectionTop + sectionHeight);
+                const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+                
+                if (visibleHeight > maxVisible) {
+                    maxVisible = visibleHeight;
+                    activeSectionId = sectionId;
+                }
+            });
+            
+            // Only update if changed
+            if (activeSectionId !== currentSection) {
+                currentSection = activeSectionId;
+                updateNavLinks(activeSectionId);
+            }
+        }
+
+        // Update navigation link active states with smooth transition
+        function updateNavLinks(activeSectionId) {
+            navLinks.forEach(link => {
+                const linkSection = link.getAttribute('data-section');
+                const isActive = linkSection === activeSectionId;
+                
+                // Smooth transition for active state
+                if (isActive) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        // Smooth scroll to section
+        function scrollToSection(sectionId) {
+            const target = sections[sectionId];
+            if (!target) return;
+            
+            const targetPosition = target.getBoundingClientRect().top + window.scrollY;
+            const startPosition = window.scrollY;
+            const distance = targetPosition - startPosition - 60; // Account for nav height
+            const duration = 800;
+            let startTime = null;
+            
+            function easeInOutCubic(t) {
+                return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            }
+            
+            function animation(currentTime) {
+                if (startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const run = easeInOutCubic(Math.min(timeElapsed / duration, 1));
+                
+                window.scrollTo(0, startPosition + distance * run);
+                
+                if (timeElapsed < duration) {
+                    requestAnimationFrame(animation);
+                }
+            }
+            
+            requestAnimationFrame(animation);
+            
+            // Update active state immediately
+            currentSection = sectionId;
+            updateNavLinks(sectionId);
+        }
+
+        // Initialize navigation
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        
+        // Handle navigation link clicks
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionId = this.getAttribute('data-section');
+                scrollToSection(sectionId);
+            });
         });
 
-        // Intersection Observer for Section Reveal Animations
-        // Optimized with passive listeners and RAF
+        // =========================================
+        // SECTION REVEAL ANIMATIONS
+        // =========================================
+
         const sectionItems = document.querySelectorAll('.section-item');
 
         const observerOptions = {
@@ -1025,7 +1214,6 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Stop observing once visible for better performance
                     observer.unobserve(entry.target);
                 }
             });
@@ -1033,27 +1221,10 @@
 
         sectionItems.forEach(item => observer.observe(item));
 
-        // Smooth Scroll for Skip Link and Navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const href = this.getAttribute('href');
-                if (href !== '#') {
-                    e.preventDefault();
-                    const target = document.querySelector(href);
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                        // Set focus for accessibility
-                        target.setAttribute('tabindex', '-1');
-                        target.focus();
-                    }
-                }
-            });
-        });
+        // =========================================
+        // ACCESSIBILITY - Skip Link
+        // =========================================
 
-        // Smooth scroll for skip link specifically
         document.querySelector('.skip-link').addEventListener('click', (e) => {
             e.preventDefault();
             const mainContent = document.querySelector('#main-content');
@@ -1062,10 +1233,19 @@
             mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
 
-        // Hardware acceleration enhancement
+        // =========================================
+        // HARDWARE ACCELERATION
+        // =========================================
+
         document.querySelectorAll('.card, .grid-item, .cascade-level').forEach(el => {
             el.classList.add('animated-element');
         });
+
+        // Initialize on load
+        if (window.scrollY > 10) {
+            nav.classList.add('scrolled');
+        }
+        updateActiveSection();
     </script>
 
 </body>
