@@ -1,6 +1,6 @@
 # AGI Recognition Problem 
 
-A modern, responsive website exploring the AGI recognition debate, built using Apple's Web Design Style guidelines in a clean, light color scheme.
+A modern, responsive website exploring the AGI recognition debate, built using Web Design Style guidelines in a clean, light color scheme.
 
 ## 🎨 Design System
 
@@ -158,7 +158,6 @@ Every animation, interaction, and layout decision serves both aesthetic and func
 - [x] Hardware-accelerated animations
 - [x] Smooth scroll behavior
 - [x] Glassmorphism effects
-s
 
 ---
 
