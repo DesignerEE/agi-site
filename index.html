@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The AGI Recognition Problem: A Mirror Confusing Itself for a Window">
+    <meta name="theme-color" content="#ffffff">
+    <title>The AGI Recognition Problem</title>
+    <style>
+        /* ========================================
+           APPLE DESIGN SYSTEM - Light Mode Only
+           Based on Apple Web Design Style Guidelines
+           ======================================== */
+
+        /* ========================================
+           CSS CUSTOM PROPERTIES - Theme System
+           ======================================== */
+        :root {
+            /* === Color Palette - Light Mode === */
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafafa;
+            --bg-tertiary: #f5f5f7;
+            --bg-elevated: #ffffff;
+            
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --text-tertiary: #86868b;
+            
+            --accent-blue: #0066cc;
+            --accent-blue-hover: #0071e3;
+            --accent-blue-light: #e8f0fe;
+            
+            --separator-light: rgba(0, 0, 0, 0.06);
+            --separator-medium: rgba(0, 0, 0, 0.08);
+            --separator-strong: rgba(0, 0, 0, 0.10);
+            
+            --border-color: #e5e5e7;
+            
+            /* Glassmorphism - Light */
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.06);
+            
+            /* === Typography Scale === */
+            --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            
+            /* Size Scale (Major Third - 1.250) */
+            --font-hero: 80px;
+            --font-h1: 56px;
+            --font-h2: 40px;
+            --font-h3: 28px;
+            --font-body: 17px;
+            --font-caption: 14px;
+            --font-small: 13px;
+            
+            /* Line Heights */
+            --line-height-hero: 1.05;
+            --line-height-heading: 1.1;
+            --line-height-subheading: 1.2;
+            --line-height-body: 1.5;
+            --line-height-caption: 1.4;
+            
+            /* Letter Spacing */
+            --letter-spacing-wide: 0.1em;
+            --letter-spacing-normal: -0.022em;
+            --letter-spacing-tight: -0.03em;
+            
+            /* === Spacing Scale === */
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 40px;
+            --space-xl: 80px;
+            --space-xxl: 120px;
+            --space-xxxl: 160px;
+            
+            /* === Border Radius === */
+            --radius-sm: 12px;
+            --radius-md: 18px;
+            --radius-lg: 22px;
+            --radius-xl: 28px;
+            --radius-pill: 980px;
+            
+            /* === Shadows === */
+            --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --shadow-strong: 0 16px 48px rgba(0, 0, 0, 0.08);
+            --shadow-glass: 0 4px 16px rgba(0, 0, 0, 0.04);
+            
+            /* === Easing Functions === */
+            --ease-apple: cubic-bezier(0.4, 0.0, 0.2, 1);
+            --ease-enter: cubic-bezier(0.0, 0.0, 0.2, 1);
+            --ease-exit: cubic-bezier(0.4, 0.0, 1, 1);
+            --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+            
+            /* === Transition Durations === */
+            --duration-fast: 150ms;
+            --duration-base: 300ms;
+            --duration-slow: 500ms;
+            --duration-slower: 600ms;
+            
+            /* === Z-Index Scale === */
+            --z-base: 1;
+            --z-elevated: 10;
+            --z-sticky: 100;
+            --z-dropdown: 200;
+            --z-modal: 1000;
+            --z-toast: 1100;
+        }
+
+        /* ========================================
+           REDUCED MOTION - Accessibility
+           ======================================== */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            html {
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* ========================================
+           BASE STYLES - Foundation
+           ======================================== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            scroll-behavior: smooth;
+            scroll-padding-top: 60px;
+        }
+
+        body {
+            font-family: var(--font-system);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: var(--line-height-body);
+            font-weight: 400;
+            letter-spacing: var(--letter-spacing-normal);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Focus Styles - Accessibility */
+        :focus-visible {
+            outline: 3px solid var(--accent-blue);
+            outline-offset: 3px;
+            border-radius: var(--radius-sm);
+        }
+
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-blue);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius-pill);
+            text-decoration: none;
+            font-weight: 600;
+            z-index: var(--z-modal);
+            transition: top var(--duration-fast) var(--ease-apple);
+        }
+
+        .skip-link:focus {
+            top: 20px;
+        }
+
+        /* ========================================
+           LAYOUT - Grid & Container System
+           ======================================== */
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        .container-wide {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        /* Section Pattern */
+        .section {
+            padding: var(--space-xxl) 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ========================================
+           NAVIGATION - Glassmorphism Header
+           ======================================== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            z-index: var(--z-sticky);
+            background: transparent;
+            border-bottom: 1px solid transparent;
+            transition: all var(--duration-slow) var(--ease-apple);
+        }
+
+        .nav.scrolled {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: var(--letter-spacing-tight);
+        }
+
+        .nav-items {
+            display: flex;
+            gap: var(--space-lg);
+            list-style: none;
+        }
+
+        .nav-link {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color var(--duration-fast) var(--ease-apple);
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-blue);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--duration-base) var(--ease-apple);
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* ========================================
+           HERO SECTION - Cinematic Full-Bleed
+           ======================================== */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #ffffff 0%, #fafafa 50%, var(--bg-secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--space-xxxl) var(--space-lg) var(--space-xxl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center top, var(--accent-blue-light) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 102, 204, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: var(--z-base);
+            max-width: 860px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: heroEntrance var(--duration-slower) var(--ease-apple) forwards;
+        }
+
+        @keyframes heroEntrance {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-eyebrow {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: var(--letter-spacing-wide);
+            margin-bottom: var(--space-md);
+            opacity: 0;
+            animation: fadeInUp var(--duration-base) var(--ease-apple) 0.2s forwards;
+        }
+
+        .hero-title {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 700;
+            letter-spacing: var(--letter-spacing-tight);
+            line-height: var(--line-height-hero);
+            margin-bottom: var(--space-lg);
+            color: var(--text-primary);
+            opacity: 0;
+            animation: fadeInUp var(--duration-base) var(--ease-apple) 0.3s forwards;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(20px, 3vw, 28px);
+            color: var(--text-secondary);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto var(--space-xl);
+            line-height: var(--line-height-subheading);
+            opacity: 0;
+            animation: fadeInUp var(--duration-base) var(--ease-apple) 0.4s forwards;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            background: var(--accent-blue);
+            color: white;
+            padding: 16px 32px;
+            border-radius: var(--radius-pill);
+            font-size: 17px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all var(--duration-base) var(--ease-apple);
+            opacity: 0;
+            animation: fadeInUp var(--duration-base) var(--ease-apple) 0.5s forwards;
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.2);
+        }
+
+        .hero-cta:hover {
+            background: var(--accent-blue-hover);
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(0, 102, 204, 0.3);
+        }
+
+        .hero-cta:active {
+            transform: scale(0.98);
+        }
+
+        /* ========================================
+           CONTENT SECTIONS - Card & Grid Patterns
+           ======================================== */
+        .content {
+            max-width: 980px;
+            margin: var(--space-xxl) auto;
+            padding: 0 var(--space-lg);
+        }
+
+        /* Section Item - Reveal Animation */
+        .section-item {
+            padding: var(--space-xl) 0;
+            border-bottom: 1px solid var(--separator-light);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity var(--duration-slow) var(--ease-apple), 
+                        transform var(--duration-slow) var(--ease-apple);
+        }
+
+        .section-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-item:last-child {
+            border-bottom: none;
+        }
+
+        .section-badge {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: var(--letter-spacing-wide);
+            margin-bottom: var(--space-md);
+        }
+
+        .section-heading {
+            font-size: clamp(28px, 5vw, 40px);
+            font-weight: 600;
+            letter-spacing: var(--letter-spacing-normal);
+            margin-bottom: var(--space-md);
+            color: var(--text-primary);
+            line-height: var(--line-height-heading);
+        }
+
+        .section-paragraph {
+            font-size: 19px;
+            color: var(--text-secondary);
+            line-height: var(--line-height-body);
+            max-width: 720px;
+            letter-spacing: 0.007em;
+        }
+
+        .section-paragraph strong {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ========================================
+           CARD COMPONENT - Glass & Shadow
+           ======================================== */
+        .card {
+            background: var(--bg-elevated);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin: var(--space-lg) 0;
+            border: 1px solid var(--separator-light);
+            box-shadow: var(--shadow-subtle);
+            transition: all var(--duration-base) var(--ease-apple);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* ========================================
+           GRID COMPONENT - Layout Patterns
+           ======================================== */
+        .grid {
+            display: grid;
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .grid-item {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg) var(--space-md);
+            text-align: center;
+            border: 1px solid var(--separator-light);
+            transition: all var(--duration-base) var(--ease-apple);
+        }
+
+        .grid-item:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-soft);
+            border-color: var(--accent-blue);
+            background: var(--bg-elevated);
+        }
+
+        .grid-item-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .grid-item-value {
+            font-size: 17px;
+            color: var(--text-primary);
+            line-height: 1.3;
+            font-weight: 500;
+        }
+
+        /* ========================================
+           LIST COMPONENT - Modern Bullet Points
+           ======================================== */
+        .list {
+            list-style: none;
+            margin-top: var(--space-md);
+        }
+
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+            padding: var(--space-sm) 0;
+            font-size: 17px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .list-item::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            margin-top: 10px;
+            flex-shrink: 0;
+        }
+
+        /* ========================================
+           CASCADE COMPONENT - Step Progress
+           ======================================== */
+        .cascade {
+            display: flex;
+            gap: var(--space-xl);
+            margin-top: var(--space-xl);
+            align-items: stretch;
+        }
+
+        .cascade-levels {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .cascade-level {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-lg);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--separator-light);
+            transition: all var(--duration-base) var(--ease-apple);
+        }
+
+        .cascade-level:hover {
+            transform: translateX(6px);
+            background: var(--bg-elevated);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .level-number {
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            letter-spacing: var(--letter-spacing-tight);
+            min-width: 48px;
+            line-height: 1;
+        }
+
+        .level-number.partial {
+            color: var(--text-tertiary);
+            opacity: 0.4;
+        }
+
+        .level-info h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .level-info p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .cascade-summary {
+            flex: 1;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, #0052a3 100%);
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            display: flex;
+            align-items: center;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .cascade-summary p {
+            font-size: 17px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* ========================================
+           MIRROR SECTION - Featured Highlight
+           ======================================== */
+        .mirror-section {
+            background: linear-gradient(180deg, var(--bg-tertiary) 0%, #ffffff 100%);
+            padding: var(--space-xxxl) var(--space-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mirror-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, var(--accent-blue-light) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .mirror-content {
+            max-width: 720px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: var(--z-base);
+        }
+
+        .mirror-title {
+            font-size: clamp(32px, 6vw, 48px);
+            font-weight: 600;
+            letter-spacing: var(--letter-spacing-normal);
+            margin-bottom: var(--space-xl);
+            color: var(--text-primary);
+            line-height: var(--line-height-heading);
+        }
+
+        .mirror-paragraph {
+            font-size: 19px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: var(--space-lg);
+            letter-spacing: 0.007em;
+        }
+
+        .highlight {
+            color: var(--accent-blue);
+            font-weight: 500;
+        }
+
+        .quote-block {
+            border-left: 3px solid var(--accent-blue);
+            padding: var(--space-xl);
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            background: var(--bg-elevated);
+            margin: var(--space-xl) 0;
+            text-align: left;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .quote-block p {
+            font-size: clamp(18px, 3vw, 22px);
+            font-style: italic;
+            color: var(--text-primary);
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .conclusion {
+            margin-top: var(--space-xxl);
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--separator-medium);
+        }
+
+        .conclusion p {
+            font-size: 15px;
+            color: var(--text-tertiary);
+            line-height: 1.6;
+        }
+
+        /* ========================================
+           FOOTER - Simple & Clean
+           ======================================== */
+        .footer {
+            padding: var(--space-xl);
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--separator-light);
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 14px;
+            color: var(--text-tertiary);
+        }
+
+        /* ========================================
+           ANIMATIONS - Keyframes
+           ======================================== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========================================
+           RESPONSIVE DESIGN - Mobile First
+           ======================================== */
+        
+        /* Tablet & Below */
+        @media (max-width: 768px) {
+            .nav-content {
+                padding: 0 var(--space-md);
+            }
+            
+            .nav-items {
+                display: none;
+            }
+            
+            .hero {
+                padding: var(--space-xxl) var(--space-md);
+            }
+            
+            .content {
+                padding: 0 var(--space-md);
+            }
+            
+            .grid-2,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            
+            .cascade {
+                flex-direction: column;
+            }
+            
+            .cascade-summary {
+                padding: var(--space-lg);
+            }
+            
+            .mirror-section {
+                padding: var(--space-xl) var(--space-md);
+            }
+            
+            .section {
+                padding: var(--space-xl) 0;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            :root {
+                --font-hero: 48px;
+                --font-h1: 36px;
+                --font-h2: 28px;
+                --space-xl: 60px;
+                --space-xxl: 80px;
+                --space-xxxl: 100px;
+            }
+            
+            .hero-content {
+                padding: 0;
+            }
+            
+            .card {
+                padding: var(--space-lg);
+            }
+        }
+
+        /* ========================================
+           UTILITY CLASSES
+           ======================================== */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+
+        /* Hardware Acceleration for Animated Elements */
+        .animated-element {
+            transform: translateZ(0);
+            will-change: transform, opacity;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Navigation - Glassmorphism -->
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+        <div class="nav-content">
+            <a href="#" class="nav-logo">AGI Recognition Problem</a>
+            <ul class="nav-items">
+                <li><a href="#hero" class="nav-link">Overview</a></li>
+                <li><a href="#evidence" class="nav-link">Evidence</a></li>
+                <li><a href="#mirror" class="nav-link">Analysis</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        
+        <!-- Hero Section - Cinematic -->
+        <section id="hero" class="hero" aria-labelledby="hero-title">
+            <div class="hero-content">
+                <p class="hero-eyebrow">The AGI Recognition Problem</p>
+                <h1 id="hero-title" class="hero-title">AGI Is Here</h1>
+                <p class="hero-subtitle">A Mirror Confusing Itself for a Window</p>
+                <a href="#evidence" class="hero-cta">Explore the Evidence</a>
+            </div>
+        </section>
+
+        <!-- Evidence Section -->
+        <div id="evidence" class="content">
+            
+            <!-- Section 1 -->
+            <article class="section-item">
+                <span class="section-badge">Evidence 01</span>
+                <h2 class="section-heading">The Turing Test Has Been Definitively Passed</h2>
+                <p class="section-paragraph">
+                    GPT-4.5 was judged to be human <strong>73% of the time</strong> in controlled Turing tests—higher than actual humans performing the same role. This directly fulfills Alan Turing's 1950 vision and demonstrates that AI can successfully "pass itself off as human to unaware humans."
+                </p>
+            </article>
+
+            <!-- Section 2 -->
+            <article class="section-item">
+                <span class="section-badge">Evidence 02</span>
+                <h2 class="section-heading">AGI Definitions Have Become Unrealistically Anthropocentric</h2>
+                <p class="section-paragraph">
+                    Critics argue these standards would disqualify most actual humans from being considered "generally intelligent," making the definitions incoherent.
+                </p>
+                <div class="grid grid-4" role="list" aria-label="Four unrealistic requirements for AGI">
+                    <div class="grid-item" role="listitem">
+                        <p class="grid-item-label">Requirement 1</p>
+                        <p class="grid-item-value">Perfection</p>
+                    </div>
+                    <div class="grid-item" role="listitem">
+                        <p class="grid-item-label">Requirement 2</p>
+                        <p class="grid-item-value">Universal Mastery</p>
+                    </div>
+                    <div class="grid-item" role="listitem">
+                        <p class="grid-item-label">Requirement 3</p>
+                        <p class="grid-item-value">Human Similarity</p>
+                    </div>
+                    <div class="grid-item" role="listitem">
+                        <p class="grid-item-label">Requirement 4</p>
+                        <p class="grid-item-value">Superintelligence</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Section 3 -->
+            <article class="section-item">
+                <span class="section-badge">Evidence 03</span>
+                <h2 class="section-heading">Current AI Already Exceeds Fictional Depictions of AGI</h2>
+                <div class="card">
+                    <p class="section-paragraph">
+                        The sentient computer <strong>HAL 9000</strong> from <em>2001: A Space Odyssey</em> (1968) exhibited less breadth than today's LLMs, which:
+                    </p>
+                    <ul class="list">
+                        <li class="list-item">Fluently write and debug complex code</li>
+                        <li class="list-item">Prove theorems across multiple mathematical fields</li>
+                        <li class="list-item">Assist scientific research</li>
+                        <li class="list-item">Converse in dozens of languages</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- Section 4 -->
+            <article class="section-item">
+                <span class="section-badge">Evidence 04</span>
+                <h2 class="section-heading">All Major Objections Have Collapsed Under Evidence</h2>
+                <p class="section-paragraph">
+                    The "stochastic parrot," "no world models," "only understand words," "no embodiment," and "no agency" critiques have been systematically disproven. Current LLMs:
+                </p>
+                <ul class="list">
+                    <li class="list-item">Solve unpublished math problems</li>
+                    <li class="list-item">Answer counterfactual physics questions correctly</li>
+                    <li class="list-item">Demonstrate cross-domain transfer (code training improves general reasoning)</li>
+                </ul>
+            </article>
+
+            <!-- Section 5 -->
+            <article class="section-item">
+                <span class="section-badge">Evidence 05</span>
+                <h2 class="section-heading">Evidence for Intelligence Comes as a Cascade, Not a Bright Line</h2>
+                <p class="section-paragraph">Rather than a single threshold, intelligence emerges across three levels:</p>
+                <div class="cascade">
+                    <div class="cascade-levels">
+                        <div class="cascade-level">
+                            <span class="level-number">1</span>
+                            <div class="level-info">
+                                <h3>Turing-Test Competence</h3>
+                                <p>Successfully passes as human</p>
+                            </div>
+                        </div>
+                        <div class="cascade-level">
+                            <span class="level-number">2</span>
+                            <div class="level-info">
+                                <h3>Expert Performance</h3>
+                                <p>PhD exams, IMO gold medals, professional coding</p>
+                            </div>
+                        </div>
+                        <div class="cascade-level">
+                            <span class="level-number partial">3</span>
+                            <div class="level-info">
+                                <h3 style="color: var(--text-tertiary); opacity: 0.5;">Superhuman Revolutionary Discoveries</h3>
+                                <p>Einstein-level breakthroughs</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cascade-summary">
+                        <p>Current systems already cover the first two, which is sufficient evidence for general intelligence—just as we credit humans without demanding Einstein-level breakthroughs.</p>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- Mirror Section - Featured Analysis -->
+        <section id="mirror" class="mirror-section" aria-labelledby="mirror-title">
+            <div class="mirror-content">
+                <h2 id="mirror-title" class="mirror-title">A Mirror Confusing Itself for a Window</h2>
+
+                <p class="mirror-paragraph">
+                    The core obstacle to recognizing AGI is <strong>philosophical inconsistency</strong>: we attribute intelligence to other humans purely through behavioral inference ("they act intelligent, therefore they are"), yet refuse AI the same epistemic standard.
+                </p>
+
+                <p class="mirror-paragraph">
+                    This exposes a deep cognitive bias; we demand that AI prove its intelligence through <em class="highlight">biologically-impossible feats</em> (like having a body or making intuitive leaps without training data) that we'd never require of Stephen Hawking.
+                </p>
+
+                <blockquote class="quote-block">
+                    <p>"He interacted with the world almost entirely through text and synthesized speech, yet his physical limitations in no way diminished his intelligence."</p>
+                </blockquote>
+
+                <p class="mirror-paragraph">
+                    The debate isn't about whether machines think, but whether we've unconsciously defined "thinking" as "thinking like a biological human"—creating a category error that makes AGI literally unprovable by definition.
+                </p>
+
+                <div class="conclusion">
+                    <p>This suggests the breakthrough isn't technical but perceptual: we need to recognize intelligence as a functional property that can exist in silicon, just as we would for a disembodied alien communicating by radio.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>The AGI Recognition Problem · 2025</p>
+    </footer>
+
+    <!-- JavaScript - Interactions -->
+    <script>
+        // Navigation Glass Effect on Scroll
+        const nav = document.querySelector('.nav');
+        let ticking = false;
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    nav.classList.toggle('scrolled', window.scrollY > 20);
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Intersection Observer for Section Reveal Animations
+        // Optimized with passive listeners and RAF
+        const sectionItems = document.querySelectorAll('.section-item');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -80px 0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Stop observing once visible for better performance
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        sectionItems.forEach(item => observer.observe(item));
+
+        // Smooth Scroll for Skip Link and Navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        // Set focus for accessibility
+                        target.setAttribute('tabindex', '-1');
+                        target.focus();
+                    }
+                }
+            });
+        });
+
+        // Smooth scroll for skip link specifically
+        document.querySelector('.skip-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            const mainContent = document.querySelector('#main-content');
+            mainContent.setAttribute('tabindex', '-1');
+            mainContent.focus();
+            mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        // Hardware acceleration enhancement
+        document.querySelectorAll('.card, .grid-item, .cascade-level').forEach(el => {
+            el.classList.add('animated-element');
+        });
+    </script>
+
+</body>
+</html>
